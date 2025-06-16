@@ -1,11 +1,36 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Custom Game Engine</title>
-  <style>body, html { margin: 0; padding: 0; overflow: hidden; }</style>
-</head>
-<body>
-  <canvas id="game"></canvas>
-  <script type="module" src="./main.ts"></script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matching Game Hub</title>
+
+    <!-- Inter font for modern UI -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind and custom styles -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!-- Basic meta styling -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Inter', sans-serif;
+        background: #f9fafb;
+        color: #111827;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="fade-in"></div>
+    <script type="module" src="./main.jsx"></script>
+  </body>
 </html>

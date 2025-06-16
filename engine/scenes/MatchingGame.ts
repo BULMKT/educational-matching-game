@@ -175,7 +175,7 @@ export class MatchingGame extends Scene {
     // If the audio fails to play, show win message after 1s fallback
     setTimeout(() => {
       if (!this.winMessageShown) this.winMessageShown = true;
-    }, 200);
+    }, 0);
   }
 
   handleMatch(left: Draggable, right: Draggable) {
