@@ -94,6 +94,15 @@ export class MatchingGame extends Scene {
     // Responsive layout
     this.layoutItems();
     window.addEventListener('resize', () => this.layoutItems());
+
+    // Unlock audio on first user interaction (for iOS)
+    const unlock = () => {
+      this.audio.unlockAll();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+    window.addEventListener('pointerdown', unlock);
+    window.addEventListener('touchstart', unlock);
   }
 
   private layoutItems() {
@@ -138,7 +147,7 @@ export class MatchingGame extends Scene {
     // Win detection
     if (!this.winShown && this.leftItems.every((item) => item['matched'])) {
       this.winShown = true;
-      this.audio.play('win');
+      this.audio.play('correct'); // Play correct sound only on win
     }
 
     // Update floating texts
@@ -160,7 +169,7 @@ export class MatchingGame extends Scene {
     const label = left.getLabel().toLowerCase();
     if (label.includes('dog')) this.audio.play('dog');
     else if (label.includes('cat')) this.audio.play('cat');
-    else this.audio.play('correct');
+    // No fallback sound here; only play win/correct on win
     // Floating text
     this.floatingTexts.push({
       x: left.x + 60,
