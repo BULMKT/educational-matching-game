@@ -1,5 +1,6 @@
 export class AudioManager {
   private sounds: { [key: string]: HTMLAudioElement } = {};
+  private current: HTMLAudioElement | null = null;
 
   constructor() {
     this.sounds['dog'] = new Audio('dog.mp3');
@@ -17,15 +18,29 @@ export class AudioManager {
       audio.pause();
       audio.currentTime = 0;
     });
+    this.current = null;
   }
 
-  play(name: string) {
+  play(name: string, onEnded?: () => void) {
     this.stopAll();
     const sound = this.sounds[name];
     if (sound) {
+      this.current = sound;
       sound.currentTime = 0;
+      if (onEnded) {
+        sound.onended = () => {
+          sound.onended = null;
+          onEnded();
+        };
+      } else {
+        sound.onended = null;
+      }
       sound.play();
     }
+  }
+
+  isPlaying() {
+    return this.current && !this.current.paused;
   }
 
   unlockAll() {

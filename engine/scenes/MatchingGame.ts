@@ -73,6 +73,8 @@ export class MatchingGame extends Scene {
   private fps = 0;
   private audio: AudioManager;
   private floatingTexts: FloatingText[] = [];
+  private winPending = false;
+  private winMessageShown = false;
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -147,7 +149,14 @@ export class MatchingGame extends Scene {
     // Win detection
     if (!this.winShown && this.leftItems.every((item) => item['matched'])) {
       this.winShown = true;
-      this.audio.play('correct'); // Play correct sound only on win
+      this.winPending = true;
+      // Wait for any current sound to finish, then play 'correct' and show win
+      const currentAudio = (this.audio as any).current as HTMLAudioElement | null;
+      if (this.audio.isPlaying() && currentAudio) {
+        currentAudio.addEventListener('ended', this.handleWinAudio, { once: true });
+      } else {
+        this.handleWinAudio();
+      }
     }
 
     // Update floating texts
@@ -157,6 +166,16 @@ export class MatchingGame extends Scene {
       ft.time += delta;
       return ft.alpha > 0 && ft.time < 1000;
     });
+  }
+
+  private handleWinAudio = () => {
+    this.audio.play('correct', () => {
+      this.winMessageShown = true;
+    });
+    // If the audio fails to play, show win message after 1s fallback
+    setTimeout(() => {
+      if (!this.winMessageShown) this.winMessageShown = true;
+    }, 200);
   }
 
   handleMatch(left: Draggable, right: Draggable) {
@@ -223,7 +242,7 @@ export class MatchingGame extends Scene {
     });
 
     // Show win message
-    if (this.leftItems.every((item) => item['matched'])) {
+    if (this.winMessageShown) {
       this.ctx.save();
       this.ctx.fillStyle = 'green';
       this.ctx.font = 'bold 56px sans-serif';
