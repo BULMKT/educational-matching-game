@@ -79,13 +79,253 @@ const App = () => {
 		setView("edit");
 	};
 
+	const styles = {
+		container: {
+			minHeight: '100vh',
+			background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+			fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+			color: '#1f2937',
+			position: 'relative',
+			overflowY: 'auto', // Changed from 'hidden' to 'auto' to allow scrolling
+			overflowX: 'hidden' // Keep horizontal overflow hidden
+		},
+		backgroundOrb1: {
+			position: 'absolute',
+			top: '-10rem',
+			right: '-10rem',
+			width: '20rem',
+			height: '20rem',
+			background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, transparent 100%)',
+			borderRadius: '50%',
+			animation: 'float 6s ease-in-out infinite',
+			zIndex: 1
+		},
+		backgroundOrb2: {
+			position: 'absolute',
+			bottom: '-10rem',
+			left: '-10rem',
+			width: '24rem',
+			height: '24rem',
+			background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
+			borderRadius: '50%',
+			animation: 'float 8s ease-in-out infinite reverse',
+			zIndex: 1
+		},
+		content: {
+			position: 'relative',
+			zIndex: 10
+		},
+		header: {
+			textAlign: 'center',
+			padding: '4rem 1rem'
+		},
+		mainTitle: {
+			fontSize: 'clamp(3rem, 8vw, 6rem)',
+			fontWeight: '900',
+			background: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
+			WebkitBackgroundClip: 'text',
+			WebkitTextFillColor: 'transparent',
+			backgroundClip: 'text',
+			textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+			marginBottom: '1rem',
+			letterSpacing: '-0.02em'
+		},
+		subtitle: {
+			fontSize: '1.25rem',
+			color: 'rgba(255,255,255,0.9)',
+			maxWidth: '32rem',
+			margin: '0 auto',
+			lineHeight: '1.6',
+			fontWeight: '400'
+		},
+		sectionTitle: {
+			fontSize: '2.5rem',
+			fontWeight: '800',
+			textAlign: 'center',
+			color: 'white',
+			marginBottom: '3rem',
+			textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+		},
+		gameGrid: {
+			display: 'grid',
+			gap: '2rem',
+			gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+			maxWidth: '90rem',
+			margin: '0 auto',
+			padding: '0 1rem 2rem' // Added bottom padding for better scrolling
+		},
+		gameCard: {
+			background: 'rgba(255,255,255,0.95)',
+			borderRadius: '1.5rem',
+			padding: '2rem',
+			boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+			border: '1px solid rgba(255,255,255,0.3)',
+			backdropFilter: 'blur(10px)',
+			transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+			cursor: 'pointer',
+			position: 'relative',
+			overflow: 'hidden'
+		},
+		gameCardHover: {
+			transform: 'translateY(-8px) scale(1.02)',
+			boxShadow: '0 30px 60px rgba(0,0,0,0.25)',
+			background: 'rgba(255,255,255,0.98)'
+		},
+		gameEmoji: {
+			fontSize: '4rem',
+			marginBottom: '1rem',
+			display: 'block',
+			textAlign: 'center',
+			filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
+		},
+		gameTitle: {
+			fontSize: '1.5rem',
+			fontWeight: '700',
+			color: '#1f2937',
+			marginBottom: '1rem',
+			textAlign: 'center'
+		},
+		pairsList: {
+			marginBottom: '1.5rem'
+		},
+		pairItem: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			padding: '0.75rem 1rem',
+			margin: '0.5rem 0',
+			background: 'rgba(99, 102, 241, 0.1)',
+			borderRadius: '0.75rem',
+			fontSize: '0.9rem',
+			border: '1px solid rgba(99, 102, 241, 0.2)'
+		},
+		pairArrow: {
+			display: 'flex',
+			gap: '0.25rem'
+		},
+		dot: {
+			width: '0.25rem',
+			height: '0.25rem',
+			borderRadius: '50%',
+			background: 'linear-gradient(45deg, #8b5cf6, #ec4899)',
+			animation: 'pulse 2s infinite'
+		},
+		buttonGroup: {
+			display: 'flex',
+			gap: '0.75rem'
+		},
+		playButton: {
+			flex: 1,
+			padding: '0.875rem 1rem',
+			background: 'linear-gradient(135deg, #10b981, #059669)',
+			color: 'white',
+			border: 'none',
+			borderRadius: '0.875rem',
+			fontWeight: '600',
+			fontSize: '0.95rem',
+			cursor: 'pointer',
+			transition: 'all 0.3s ease',
+			boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: '0.5rem'
+		},
+		editButton: {
+			flex: 1,
+			padding: '0.875rem 1rem',
+			background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+			color: 'white',
+			border: 'none',
+			borderRadius: '0.875rem',
+			fontWeight: '600',
+			fontSize: '0.95rem',
+			cursor: 'pointer',
+			transition: 'all 0.3s ease',
+			boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			gap: '0.5rem'
+		},
+		backButton: {
+			padding: '0.75rem 2rem',
+			background: 'rgba(255,255,255,0.2)',
+			backdropFilter: 'blur(10px)',
+			color: 'white',
+			border: '1px solid rgba(255,255,255,0.3)',
+			borderRadius: '1rem',
+			fontWeight: '600',
+			cursor: 'pointer',
+			transition: 'all 0.3s ease',
+			marginBottom: '2rem',
+			display: 'flex',
+			alignItems: 'center',
+			gap: '0.5rem'
+		},
+		canvas: {
+			borderRadius: '1.5rem',
+			border: '4px solid rgba(255,255,255,0.3)',
+			boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
+			background: 'white'
+		},
+		playSection: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			padding: '2rem 1rem'
+		},
+		editSection: {
+			padding: '2rem 1rem'
+		}
+	};
+
 	// If in play mode, render only the canvas
 	if (view === "play") {
+		// Add effect to lock body scroll when entering game mode
+		useEffect(() => {
+			// Save original styles
+			const originalStyle = window.getComputedStyle(document.body).overflow;
+			// Prevent scrolling on body
+			document.body.style.overflow = 'hidden';
+			document.body.style.position = 'fixed';
+			document.body.style.width = '100%';
+			document.body.style.height = '100%';
+			document.body.style.top = '0';
+			document.body.style.left = '0';
+
+			// Cleanup when exiting game mode
+			return () => {
+				document.body.style.overflow = originalStyle;
+				document.body.style.position = '';
+				document.body.style.width = '';
+				document.body.style.height = '';
+				document.body.style.top = '';
+				document.body.style.left = '';
+			};
+		}, []);
+
 		return (
-			<div className="game-container">
+			<div style={{
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				width: "100vw",
+				height: "100vh",
+				touchAction: "none", // Prevent all touch actions
+				overflow: "hidden",
+				background: "#000"
+			}}>
 				<canvas
 					ref={canvasRef}
-					className="game-canvas"
+					style={{
+						width: "100%",
+						height: "100%",
+						display: "block",
+						touchAction: "none" // Prevent all touch actions on canvas
+					}}
 				/>
 			</div>
 		);
@@ -93,10 +333,10 @@ const App = () => {
 
 	// For all other views, render the normal UI
 	return (
-		<div className="home-container">
-			<div className="backgroundOrb1" />
-			<div className="backgroundOrb2" />
-			<div className="content">
+		<div style={styles.container}>
+			<div style={styles.backgroundOrb1} />
+			<div style={styles.backgroundOrb2} />
+			<div style={styles.content}>
 				{view === "edit" ? (
 					<CreateMatchingGame
 						initialTitle={customGame?.title || ""}
@@ -134,79 +374,6 @@ const App = () => {
 			</div>
 		</div>
 	);
-};
-
-// Styles object
-const styles = {
-	container: {
-		minHeight: '100vh',
-		background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-		fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-		color: '#1f2937',
-		position: 'relative',
-		overflow: 'hidden'
-	},
-	backgroundOrb1: {
-		position: 'absolute',
-		top: '-10rem',
-		right: '-10rem',
-		width: '20rem',
-		height: '20rem',
-		background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, transparent 100%)',
-		borderRadius: '50%',
-		animation: 'float 6s ease-in-out infinite',
-		zIndex: 1
-	},
-	backgroundOrb2: {
-		position: 'absolute',
-		bottom: '-10rem',
-		left: '-10rem',
-		width: '24rem',
-		height: '24rem',
-		background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
-		borderRadius: '50%',
-		animation: 'float 8s ease-in-out infinite reverse',
-		zIndex: 1
-	},
-	header: {
-		textAlign: 'center',
-		padding: '4rem 1rem'
-	},
-	mainTitle: {
-		fontSize: 'clamp(3rem, 8vw, 6rem)',
-		fontWeight: '900',
-		background: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
-		WebkitBackgroundClip: 'text',
-		WebkitTextFillColor: 'transparent',
-		backgroundClip: 'text',
-		textShadow: '0 4px 8px rgba(0,0,0,0.3)',
-		marginBottom: '1rem',
-		letterSpacing: '-0.02em'
-	},
-	subtitle: {
-		fontSize: '1.25rem',
-		color: 'rgba(255,255,255,0.9)',
-		maxWidth: '32rem',
-		margin: '0 auto',
-		lineHeight: '1.6',
-		fontWeight: '400'
-	},
-	sectionTitle: {
-		fontSize: '2.5rem',
-		fontWeight: '800',
-		textAlign: 'center',
-		color: 'white',
-		marginBottom: '3rem',
-		textShadow: '0 4px 8px rgba(0,0,0,0.3)'
-	},
-	gameGrid: {
-		display: 'grid',
-		gap: '2rem',
-		gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-		maxWidth: '90rem',
-		margin: '0 auto',
-		padding: '0 1rem'
-	}
 };
 
 // Separate GameCard component for cleaner code
