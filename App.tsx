@@ -79,10 +79,10 @@ const App = () => {
 		setView("edit");
 	};
 
-	// If in play mode, render only the canvas in full screen
+	// If in play mode, render only the canvas
 	if (view === "play") {
 		return (
-			<div className="game-page">
+			<div className="game-container">
 				<canvas
 					ref={canvasRef}
 					className="game-canvas"
@@ -91,10 +91,12 @@ const App = () => {
 		);
 	}
 
-	// For home and edit views, render the scrollable content
+	// For all other views, render the normal UI
 	return (
-		<div className="home-page">
-			<div className="min-h-screen p-4">
+		<div className="home-container">
+			<div className="backgroundOrb1" />
+			<div className="backgroundOrb2" />
+			<div className="content">
 				{view === "edit" ? (
 					<CreateMatchingGame
 						initialTitle={customGame?.title || ""}
@@ -104,41 +106,26 @@ const App = () => {
 					/>
 				) : (
 					<>
-						<header className="text-center py-12">
-							<h1 className="text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
-								Fun Learning Games
-							</h1>
-							<p className="text-xl text-gray-600 max-w-2xl mx-auto">
+						<header style={styles.header}>
+							<h1 style={styles.mainTitle}>Fun Learning Games</h1>
+							<p style={styles.subtitle}>
 								Interactive educational games for learning and engagement
 							</p>
 						</header>
-						<section className="max-w-7xl mx-auto px-4">
-							<h2 className="text-4xl font-bold text-center mb-12 text-white">
-								Choose a Game
-							</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						<section>
+							<h2 style={styles.sectionTitle}>Choose a Game</h2>
+							<div style={styles.gameGrid}>
 								{builtInGames.map((game) => (
-									<div
+									<GameCard
 										key={game.id}
-										className="bg-white/95 rounded-2xl p-8 shadow-xl backdrop-blur-sm border border-white/30 hover:shadow-2xl transition-all duration-300 cursor-pointer"
-										style={{ background: game.color }}
-										onClick={() => {
+										game={game}
+										onPlay={() => {
 											setSelectedGame(game);
 											setView("play");
 										}}
-									>
-										<div className="text-4xl mb-4">{game.emoji}</div>
-										<h3 className="text-2xl font-bold text-white mb-2">{game.title}</h3>
-										<button
-											onClick={(e) => {
-												e.stopPropagation();
-												handleCustomize(game);
-											}}
-											className="mt-4 bg-white/20 hover:bg-white/30 text-white"
-										>
-											Customize
-										</button>
-									</div>
+										onEdit={() => handleCustomize(game)}
+										styles={styles}
+									/>
 								))}
 							</div>
 						</section>
@@ -147,6 +134,79 @@ const App = () => {
 			</div>
 		</div>
 	);
+};
+
+// Styles object
+const styles = {
+	container: {
+		minHeight: '100vh',
+		background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+		fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+		color: '#1f2937',
+		position: 'relative',
+		overflow: 'hidden'
+	},
+	backgroundOrb1: {
+		position: 'absolute',
+		top: '-10rem',
+		right: '-10rem',
+		width: '20rem',
+		height: '20rem',
+		background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, transparent 100%)',
+		borderRadius: '50%',
+		animation: 'float 6s ease-in-out infinite',
+		zIndex: 1
+	},
+	backgroundOrb2: {
+		position: 'absolute',
+		bottom: '-10rem',
+		left: '-10rem',
+		width: '24rem',
+		height: '24rem',
+		background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
+		borderRadius: '50%',
+		animation: 'float 8s ease-in-out infinite reverse',
+		zIndex: 1
+	},
+	header: {
+		textAlign: 'center',
+		padding: '4rem 1rem'
+	},
+	mainTitle: {
+		fontSize: 'clamp(3rem, 8vw, 6rem)',
+		fontWeight: '900',
+		background: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
+		WebkitBackgroundClip: 'text',
+		WebkitTextFillColor: 'transparent',
+		backgroundClip: 'text',
+		textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+		marginBottom: '1rem',
+		letterSpacing: '-0.02em'
+	},
+	subtitle: {
+		fontSize: '1.25rem',
+		color: 'rgba(255,255,255,0.9)',
+		maxWidth: '32rem',
+		margin: '0 auto',
+		lineHeight: '1.6',
+		fontWeight: '400'
+	},
+	sectionTitle: {
+		fontSize: '2.5rem',
+		fontWeight: '800',
+		textAlign: 'center',
+		color: 'white',
+		marginBottom: '3rem',
+		textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+	},
+	gameGrid: {
+		display: 'grid',
+		gap: '2rem',
+		gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+		maxWidth: '90rem',
+		margin: '0 auto',
+		padding: '0 1rem'
+	}
 };
 
 // Separate GameCard component for cleaner code

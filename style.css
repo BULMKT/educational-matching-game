@@ -6,19 +6,17 @@
 body {
   @apply font-sans text-gray-800;
   font-family: 'Inter', sans-serif;
-}
-
-/* Home page styles */
-.home-page {
-  @apply min-h-screen bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50;
   overflow-y: auto;
 }
 
-/* Game page styles */
-.game-page {
+.game-container {
   @apply fixed inset-0;
   overflow: hidden;
   background: #000;
+}
+
+.home-container {
+  @apply min-h-screen bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50;
 }
 
 button {
@@ -30,7 +28,7 @@ button:focus {
 }
 
 /* Smooth, modern canvas display */
-canvas.home-canvas {
+canvas {
   display: block;
   background: #fff;
   border-radius: 1rem;
@@ -44,11 +42,12 @@ canvas.game-canvas {
   width: 100vw;
   height: 100vh;
   display: block;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-/* Utility for fading in elements */
 .fade-in {
-  animation: fadeIn 0.5s ease-in-out both;
+  animation: fadeIn 0.5s ease-in;
 }
 
 @keyframes fadeIn {
