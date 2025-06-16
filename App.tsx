@@ -40,14 +40,24 @@ const App = () => {
 	useEffect(() => {
 		if (view === "play" && canvasRef.current && selectedGame) {
 			let game;
-			import("./engine/core/Game").then(({ Game }) => {
-				import("./engine/utils/loader").then(({ Loader }) => {
-					const originalLoad = Loader.loadGameData;
-					Loader.loadGameData = () => selectedGame;
-					game = new Game(canvasRef.current);
-					game.start();
-					Loader.loadGameData = originalLoad;
-				});
+			
+			// Set initial canvas size
+			const canvas = canvasRef.current;
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			// Initialize game
+			Promise.all([
+				import("./engine/core/Game"),
+				import("./engine/utils/loader")
+			]).then(([{ Game }, { Loader }]) => {
+				const originalLoad = Loader.loadGameData;
+				Loader.loadGameData = () => selectedGame;
+				game = new Game(canvas);
+				game.start();
+				Loader.loadGameData = originalLoad;
+			}).catch(error => {
+				console.error("Error loading game:", error);
 			});
 
 			const handleEsc = (e) => {
@@ -58,7 +68,9 @@ const App = () => {
 					setView("home");
 				}
 			};
+
 			window.addEventListener("keydown", handleEsc);
+			
 			return () => {
 				window.removeEventListener("keydown", handleEsc);
 				if (game) {
@@ -69,8 +81,17 @@ const App = () => {
 	}, [view, selectedGame]);
 
 	const handlePreviewGame = (title, pairs, theme = "jungle") => {
-		setCustomGame({ template: "matching", theme, title, items: pairs });
-		setSelectedGame({ template: "matching", theme, title, items: pairs });
+		const gameData = {
+			id: `custom-${Date.now()}`,
+			title: title,
+			theme: theme,
+			template: "matching",
+			emoji: "✨",
+			color: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+			items: pairs
+		};
+		setCustomGame(gameData);
+		setSelectedGame(gameData);
 		setView("play");
 	};
 
@@ -282,29 +303,6 @@ const App = () => {
 
 	// If in play mode, render only the canvas
 	if (view === "play") {
-		// Add effect to lock body scroll when entering game mode
-		useEffect(() => {
-			// Save original styles
-			const originalStyle = window.getComputedStyle(document.body).overflow;
-			// Prevent scrolling on body
-			document.body.style.overflow = 'hidden';
-			document.body.style.position = 'fixed';
-			document.body.style.width = '100%';
-			document.body.style.height = '100%';
-			document.body.style.top = '0';
-			document.body.style.left = '0';
-
-			// Cleanup when exiting game mode
-			return () => {
-				document.body.style.overflow = originalStyle;
-				document.body.style.position = '';
-				document.body.style.width = '';
-				document.body.style.height = '';
-				document.body.style.top = '';
-				document.body.style.left = '';
-			};
-		}, []);
-
 		return (
 			<div style={{
 				position: "fixed",
@@ -314,17 +312,17 @@ const App = () => {
 				bottom: 0,
 				width: "100vw",
 				height: "100vh",
-				touchAction: "none", // Prevent all touch actions
+				touchAction: "none",
 				overflow: "hidden",
 				background: "#000"
 			}}>
 				<canvas
 					ref={canvasRef}
 					style={{
+						display: "block",
 						width: "100%",
 						height: "100%",
-						display: "block",
-						touchAction: "none" // Prevent all touch actions on canvas
+						touchAction: "none"
 					}}
 				/>
 			</div>
