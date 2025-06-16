@@ -2,11 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Modern base UI polish */
 body {
+  @apply font-sans text-gray-800;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(to bottom right, #eef2ff, #f0fdfa, #d1fae5);
-  color: #374151;
-  min-height: 100vh;
+}
+
+/* Home page styles */
+.home-page {
+  @apply min-h-screen bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50;
+  overflow-y: auto;
+}
+
+/* Game page styles */
+.game-page {
+  @apply fixed inset-0;
+  overflow: hidden;
+  background: #000;
 }
 
 button {
@@ -17,7 +29,8 @@ button:focus {
   @apply outline-none ring-2 ring-blue-300 ring-offset-2;
 }
 
-canvas {
+/* Smooth, modern canvas display */
+canvas.home-canvas {
   display: block;
   background: #fff;
   border-radius: 1rem;
@@ -27,6 +40,13 @@ canvas {
   height: auto;
 }
 
+canvas.game-canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+/* Utility for fading in elements */
 .fade-in {
   animation: fadeIn 0.5s ease-in-out both;
 }
@@ -36,6 +56,7 @@ canvas {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Styling scrollbars (optional but nice) */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
