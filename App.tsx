@@ -565,61 +565,6 @@ const App = () => {
 								))}
 							</div>
 						</section>
-						
-						{/* Debug info and footer for mobile testing */}
-						<footer style={{
-							textAlign: 'center',
-							padding: '4rem 1rem',
-							color: 'rgba(255,255,255,0.9)',
-							fontSize: '1.1rem',
-							background: 'rgba(0,0,0,0.2)',
-							borderRadius: '1rem',
-							margin: '2rem 1rem',
-							border: '2px solid rgba(255,255,255,0.3)'
-						}}>
-							<div style={{marginBottom: '1rem'}}>
-								🎯 <strong>BOTTOM REACHED!</strong> 
-							</div>
-							<div style={{fontSize: '0.9rem', opacity: 0.8}}>
-								If you can see this clearly, scrolling works!
-							</div>
-							<div style={{fontSize: '0.8rem', marginTop: '1rem', opacity: 0.7}}>
-								Desktop: ✅ Working | Mobile: {navigator.userAgent.includes('Mobile') ? '🔍 Testing' : '💻 Desktop'}
-							</div>
-						</footer>
-						
-						{/* MOBILE BOTTOM SPACER - Ensure mobile users can reach the footer */}
-						<div style={{
-							height: '20rem',
-							width: '100%',
-							background: 'transparent',
-							display: 'block',
-							clear: 'both'
-						}} />
-						
-						{/* EXTREME MOBILE BOTTOM SPACER */}
-						{typeof window !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent) && (
-							<div style={{
-								height: '30rem',
-								width: '100%',
-								background: 'linear-gradient(to bottom, transparent, rgba(102, 126, 234, 0.1))',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								fontSize: '1.2rem',
-								color: 'rgba(255,255,255,0.8)',
-								textAlign: 'center',
-								padding: '2rem'
-							}}>
-								<div>
-									<div style={{fontSize: '3rem', marginBottom: '1rem'}}>🎉</div>
-									<div style={{fontWeight: 'bold'}}>You've reached the very bottom!</div>
-									<div style={{fontSize: '0.9rem', marginTop: '0.5rem', opacity: 0.8}}>
-										Mobile scrolling is working perfectly ✅
-									</div>
-								</div>
-							</div>
-						)}
 					</>
 				)}
 			</div>

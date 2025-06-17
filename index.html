@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover, minimum-scale=1.0, maximum-scale=5.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover, minimum-scale=1.0, maximum-scale=5.0, shrink-to-fit=no" />
     <title>Matching Game Hub</title>
 
     <!-- Inter font for modern UI -->
@@ -14,47 +14,79 @@
     <!-- Tailwind and custom styles -->
     <link rel="stylesheet" href="./style.css" />
 
-    <!-- Critical mobile scrolling styles - override everything -->
+    <!-- Mobile viewport fix for proper scrolling -->
     <style>
       * {
         box-sizing: border-box;
       }
       
       html {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 100vh !important;
+        height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
         overflow-x: hidden !important;
-        overflow-y: auto !important;
+        overflow-y: scroll !important;
         -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior: none !important;
+        /* Fix for iOS viewport units */
+        min-height: 100vh !important;
+        min-height: -webkit-fill-available !important;
       }
       
       body {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 100vh !important;
+        height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-        padding-bottom: 25rem !important;
         width: 100% !important;
         overflow-x: hidden !important;
-        overflow-y: auto !important;
+        overflow-y: visible !important;
         -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior: none !important;
+        /* Ensure body can expand beyond viewport */
+        min-height: 100vh !important;
+        min-height: -webkit-fill-available !important;
       }
       
       #root {
         width: 100% !important;
-        height: auto !important;
-        max-height: none !important;
         min-height: 100vh !important;
-        padding-bottom: 20rem !important;
+        min-height: -webkit-fill-available !important;
         overflow-x: hidden !important;
         overflow-y: visible !important;
+      }
+      
+      /* Specific mobile fixes */
+      @media screen and (max-width: 768px) {
+        html, body {
+          /* Remove any height constraints that prevent scrolling */
+          max-height: none !important;
+          position: static !important;
+        }
+        
+        /* Ensure touch scrolling works */
+        body {
+          touch-action: pan-y !important;
+        }
+      }
+      
+      /* PORTRAIT MODE FIXES */
+      @media screen and (max-width: 768px) and (orientation: portrait) {
+        /* Prevent UI stretching in portrait */
+        * {
+          max-width: 100vw !important;
+          word-wrap: break-word !important;
+        }
+        
+        /* Fix any containers that might stretch */
+        div, section, article {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        
+        /* Ensure proper text wrapping */
+        h1, h2, h3, p, span {
+          word-break: break-word !important;
+          overflow-wrap: break-word !important;
+        }
       }
     </style>
   </head>

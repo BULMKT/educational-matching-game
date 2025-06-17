@@ -6,37 +6,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Critical mobile scrolling reset - override everything */
+/* Critical mobile scrolling reset - enable proper scrolling */
 * {
   box-sizing: border-box;
 }
 
 html {
-  height: auto !important;
-  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
+  /* Use viewport units that work on mobile */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 body {
-  height: auto !important;
-  max-height: none !important;
-  min-height: 100vh !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  /* Allow body to expand beyond viewport for scrolling */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 #root {
-  height: auto !important;
-  max-height: none !important;
-  min-height: 100vh !important;
   overflow-x: hidden !important;
-  overflow-y: visible !important;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* Modern base UI polish */
@@ -109,11 +107,12 @@ body.in-game {
   height: 100% !important;
 }
 
-/* Regular container styles */
+/* Regular container styles - allow natural scrolling */
 .home-container {
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   background: linear-gradient(to bottom right, #eef2ff, #f0f9ff, #ecfdf5);
-  overflow-y: auto;
+  /* Remove overflow constraints to allow scrolling */
 }
 
 /* Game container styles */
@@ -251,81 +250,138 @@ canvas.game-canvas {
   }
 }
 
-/* ULTIMATE MOBILE SCROLLING FIX - Target the hard stop issue */
+/* MOBILE SCROLLING FIX - Enable proper scrolling behavior */
 @media screen and (max-width: 768px) {
-  /* Nuclear option - override EVERYTHING on mobile */
-  html, body, #root, div, main, section, article {
-    height: auto !important;
-    max-height: none !important;
-    min-height: auto !important;
-    overflow: visible !important;
+  /* Ensure all elements can scroll naturally */
+  html, body, #root {
     position: static !important;
+    overflow-x: hidden !important;
+    /* Remove height constraints that prevent scrolling */
+    max-height: none !important;
   }
   
-  /* Specifically target body and html */
   html {
     overflow-y: scroll !important;
-    overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
+    /* Better mobile viewport handling */
+    height: 100%;
   }
   
   body {
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
+    overflow-y: visible !important;
     -webkit-overflow-scrolling: touch !important;
-    transform: translateZ(0) !important; /* Force GPU layer */
-    padding-bottom: 25rem !important; /* MASSIVE bottom padding */
+    /* Enable touch scrolling */
+    touch-action: pan-y !important;
+    /* Remove artificial bottom padding */
+    padding-bottom: 0 !important;
   }
   
-  /* Override any viewport height constraints */
-  * {
-    max-height: none !important;
+  /* Ensure containers can expand naturally */
+  .home-container {
+    overflow-y: visible !important;
+    /* Add natural bottom spacing */
+    padding-bottom: 2rem;
   }
   
-  /* Remove any fixed positioning that might cause issues */
-  *:not(canvas) {
+  /* Remove any fixed positioning constraints */
+  *:not(.game-container):not(canvas) {
     position: static !important;
   }
   
-  /* Ensure all containers can expand */
-  [style*="height"] {
-    height: auto !important;
-    max-height: none !important;
-  }
-  
-  /* Target inline styles that might contain height constraints */
-  [style*="100vh"] {
-    height: auto !important;
-    min-height: 100vh !important;
-    max-height: none !important;
-  }
-  
-  /* Force specific container elements to be flexible */
-  div[style*="minHeight"], 
-  div[style*="min-height"] {
-    min-height: auto !important;
-    height: auto !important;
-  }
-  
-  /* Force all grid containers to have extra bottom space */
-  .game-grid, 
-  [style*="grid"], 
-  [style*="padding"] {
-    padding-bottom: 20rem !important;
-  }
-  
-  /* Make sure footer and bottom sections are visible */
-  footer {
-    margin-bottom: 15rem !important;
-    position: relative !important;
-    z-index: 10 !important;
+  /* Ensure grid containers have proper spacing */
+  .game-grid {
+    margin-bottom: 2rem;
   }
 }
 
-/* Improved iOS safari scrolling */
+/* PORTRAIT MODE FIXES - Prevent UI stretching */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  /* Fix container proportions for portrait */
+  .home-container {
+    padding: 1rem !important;
+    min-height: 100vh;
+  }
+  
+  /* Prevent cards from stretching */
+  .game-card {
+    width: 100% !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  /* Fix grid layout for portrait */
+  .game-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Fix text and button sizing */
+  .game-title {
+    font-size: 1.25rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  .game-description {
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Fix button sizing */
+  button {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+  
+  /* Fix header and stats layout */
+  .header-stats {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    align-items: stretch !important;
+  }
+  
+  .stat {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Prevent any element from being too wide */
+  * {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Fix any flex containers */
+  [style*="display: flex"], .flex {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* LANDSCAPE MODE - Keep existing good behavior */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .game-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  }
+}
+
+/* Improved iOS Safari scrolling and viewport handling */
 @supports (-webkit-touch-callout: none) {
-  .container {
+  html {
     /* Fix for iOS viewport units */
+    min-height: -webkit-fill-available;
+    height: 100%;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+  }
+  
+  .home-container {
     min-height: -webkit-fill-available;
   }
 }
