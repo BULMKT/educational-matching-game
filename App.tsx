@@ -61,6 +61,34 @@ const App = () => {
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
+		// Manage body class for game mode
+		if (view === "play") {
+			document.body.classList.add('in-game');
+			// Prevent scrolling on mobile during game
+			document.body.style.overflow = 'hidden';
+			document.body.style.position = 'fixed';
+			document.body.style.width = '100%';
+			document.body.style.height = '100%';
+		} else {
+			document.body.classList.remove('in-game');
+			// Restore normal scrolling
+			document.body.style.overflow = '';
+			document.body.style.position = '';
+			document.body.style.width = '';
+			document.body.style.height = '';
+		}
+		
+		return () => {
+			// Cleanup on unmount
+			document.body.classList.remove('in-game');
+			document.body.style.overflow = '';
+			document.body.style.position = '';
+			document.body.style.width = '';
+			document.body.style.height = '';
+		};
+	}, [view]);
+
+	useEffect(() => {
 		if (view === "play" && canvasRef.current && selectedGame) {
 			let game;
 			
