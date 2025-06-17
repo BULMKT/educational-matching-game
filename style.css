@@ -217,11 +217,20 @@ canvas.game-canvas {
 
 /* Mobile scrolling improvements */
 @media (max-width: 768px) {
-  body {
+  html, body {
     /* Prevent bounce scrolling on iOS */
     overscroll-behavior: none;
     /* Ensure smooth scrolling */
     -webkit-overflow-scrolling: touch;
+    /* Remove any height constraints */
+    height: auto !important;
+    min-height: 100vh;
+  }
+  
+  #root {
+    /* Allow root to expand with content */
+    height: auto !important;
+    min-height: 100vh;
   }
   
   /* Use CSS custom property for mobile viewport */
@@ -239,6 +248,7 @@ canvas.game-canvas {
   /* Ensure content doesn't get cut off */
   .container {
     padding-bottom: env(safe-area-inset-bottom, 20px);
+    height: auto !important;
   }
 }
 

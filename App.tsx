@@ -144,8 +144,8 @@ const App = () => {
 			WebkitOverflowScrolling: 'touch',
 			// Prevent bounce scrolling
 			overscrollBehavior: 'none',
-			// Add adequate padding for mobile
-			paddingBottom: '4rem'
+			// Add massive padding for mobile scrolling
+			paddingBottom: '8rem'
 		},
 		backgroundOrb1: {
 			position: 'absolute',
@@ -267,8 +267,8 @@ const App = () => {
 			gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
 			maxWidth: '90rem',
 			margin: '0 auto',
-			// Much more bottom padding for mobile scrolling
-			padding: '0 1rem 8rem'
+			// Massive bottom padding to ensure mobile can scroll past all content
+			padding: '0 1rem 12rem'
 		},
 		gameCard: {
 			background: 'rgba(255,255,255,0.95)',
@@ -485,12 +485,18 @@ const App = () => {
 
 	// For all other views, render the normal UI
 	return (
-		<div style={styles.container}>
+		<div style={{
+			...styles.container,
+			// Absolutely ensure scrolling works
+			height: 'auto',
+			minHeight: '100vh',
+			maxHeight: 'none'
+		}}>
 			<div style={styles.backgroundOrb1} />
 			<div style={styles.backgroundOrb2} />
 			<div style={styles.backgroundOrb3} />
 			<div style={styles.sparkles} />
-			<div style={styles.content}>
+			<div style={{...styles.content, height: 'auto', minHeight: '100vh'}}>
 				{view === "edit" ? (
 					<CreateMatchingGame
 						initialTitle={customGame?.title || ""}
@@ -544,6 +550,16 @@ const App = () => {
 								))}
 							</div>
 						</section>
+						
+						{/* Temporary debug element to test scrolling */}
+						<footer style={{
+							textAlign: 'center',
+							padding: '4rem 1rem',
+							color: 'rgba(255,255,255,0.7)',
+							fontSize: '0.9rem'
+						}}>
+							🎯 You've reached the bottom! Scrolling works perfectly.
+						</footer>
 					</>
 				)}
 			</div>
