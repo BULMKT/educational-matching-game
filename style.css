@@ -240,49 +240,62 @@ canvas.game-canvas {
   }
 }
 
-/* AGGRESSIVE MOBILE-ONLY FIXES */
+/* ULTIMATE MOBILE SCROLLING FIX - Target the hard stop issue */
 @media screen and (max-width: 768px) {
-  /* Force mobile scrolling with extreme measures */
-  html {
+  /* Nuclear option - override EVERYTHING on mobile */
+  html, body, #root, div, main, section, article {
     height: auto !important;
     max-height: none !important;
-    min-height: 100vh !important;
+    min-height: auto !important;
     overflow: visible !important;
-    overflow-y: auto !important;
+    position: static !important;
+  }
+  
+  /* Specifically target body and html */
+  html {
+    overflow-y: scroll !important;
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: auto !important;
   }
   
   body {
-    height: auto !important;
-    max-height: none !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-    overflow-y: auto !important;
+    overflow-y: scroll !important;
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: auto !important;
-    position: static !important;
+    transform: translateZ(0) !important; /* Force GPU layer */
   }
   
-  #root {
-    height: auto !important;
-    max-height: none !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-    position: static !important;
-  }
-  
-  /* Force all containers to allow scrolling */
+  /* Override any viewport height constraints */
   * {
     max-height: none !important;
   }
   
-  /* Specific mobile webkit fixes */
-  body {
-    -webkit-transform: translate3d(0,0,0) !important;
-    transform: translate3d(0,0,0) !important;
+  /* Remove any fixed positioning that might cause issues */
+  *:not(canvas) {
+    position: static !important;
+  }
+  
+  /* Ensure all containers can expand */
+  [style*="height"] {
+    height: auto !important;
+    max-height: none !important;
+  }
+  
+  /* Target inline styles that might contain height constraints */
+  [style*="100vh"] {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+  }
+  
+  /* Force specific container elements to be flexible */
+  div[style*="minHeight"], 
+  div[style*="min-height"] {
+    min-height: auto !important;
+    height: auto !important;
+  }
+}
+    max-height: none !important;
   }
 }
 

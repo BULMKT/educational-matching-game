@@ -35,6 +35,22 @@ const forceScrollingFix = () => {
     applyMobileFix(document.body, 'BODY');
     applyMobileFix(document.getElementById('root'), 'ROOT');
     
+    // NUCLEAR OPTION: Remove height constraints from ALL elements
+    const allElements = document.getElementsByTagName('*');
+    for (let i = 0; i < allElements.length; i++) {
+      const element = allElements[i] as HTMLElement;
+      if (element.style) {
+        // Only override if element has problematic height styles
+        const computedStyle = window.getComputedStyle(element);
+        if (computedStyle.height !== 'auto' && computedStyle.height !== '' && 
+            (computedStyle.height.includes('vh') || computedStyle.height.includes('px'))) {
+          element.style.setProperty('height', 'auto', 'important');
+          element.style.setProperty('max-height', 'none', 'important');
+          console.log(`🔧 Removed height constraint from ${element.tagName}: ${computedStyle.height}`);
+        }
+      }
+    }
+    
     // Force viewport meta tag for mobile
     let viewportMeta = document.querySelector('meta[name="viewport"]');
     if (viewportMeta) {
@@ -81,6 +97,33 @@ window.addEventListener('load', forceScrollingFix);
 window.addEventListener('resize', () => {
   setTimeout(forceScrollingFix, 100);
 });
+
+// MOBILE HARD STOP FIX - Run every 2 seconds on mobile to remove constraints
+if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  const removeMobileConstraints = () => {
+    // Find all elements with height constraints and remove them
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+      const htmlEl = el as HTMLElement;
+      const computedStyle = window.getComputedStyle(htmlEl);
+      if (computedStyle.height && computedStyle.height.includes('vh')) {
+        htmlEl.style.setProperty('height', 'auto', 'important');
+      }
+      if (computedStyle.maxHeight && computedStyle.maxHeight !== 'none') {
+        htmlEl.style.setProperty('max-height', 'none', 'important');
+      }
+      if (computedStyle.overflow === 'hidden') {
+        htmlEl.style.setProperty('overflow', 'visible', 'important');
+      }
+    });
+    
+    console.log('🔧 Removed mobile height constraints');
+  };
+  
+  // Run periodically to catch dynamic constraints
+  setInterval(removeMobileConstraints, 2000);
+  setTimeout(removeMobileConstraints, 500);
+}
 
 const container = document.getElementById("root");
 if (container) {

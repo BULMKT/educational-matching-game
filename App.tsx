@@ -487,16 +487,31 @@ const App = () => {
 	return (
 		<div style={{
 			...styles.container,
-			// Absolutely ensure scrolling works
+			// FORCE mobile scrolling - remove ALL height constraints
 			height: 'auto',
-			minHeight: '100vh',
-			maxHeight: 'none'
+			minHeight: 'auto', 
+			maxHeight: 'none',
+			position: 'static',
+			// Mobile-specific overrides
+			...(typeof window !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent) && {
+				height: 'auto !important',
+				minHeight: 'auto !important',
+				maxHeight: 'none !important',
+				overflow: 'visible',
+				paddingBottom: '15rem' // Extra padding for mobile
+			})
 		}}>
 			<div style={styles.backgroundOrb1} />
 			<div style={styles.backgroundOrb2} />
 			<div style={styles.backgroundOrb3} />
 			<div style={styles.sparkles} />
-			<div style={{...styles.content, height: 'auto', minHeight: '100vh'}}>
+			<div style={{
+				...styles.content, 
+				height: 'auto', 
+				minHeight: 'auto',
+				maxHeight: 'none',
+				position: 'static'
+			}}>
 				{view === "edit" ? (
 					<CreateMatchingGame
 						initialTitle={customGame?.title || ""}
