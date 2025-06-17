@@ -117,12 +117,26 @@ if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.us
       }
     });
     
-    console.log('🔧 Removed mobile height constraints');
+    // FORCE body to have massive bottom padding
+    document.body.style.setProperty('padding-bottom', '30rem', 'important');
+    document.documentElement.style.setProperty('padding-bottom', '30rem', 'important');
+    
+    // Ensure root element can expand
+    const root = document.getElementById('root');
+    if (root) {
+      root.style.setProperty('min-height', 'auto', 'important');
+      root.style.setProperty('height', 'auto', 'important');
+      root.style.setProperty('padding-bottom', '25rem', 'important');
+    }
+    
+    console.log('🔧 Removed mobile height constraints and added bottom padding');
   };
   
   // Run periodically to catch dynamic constraints
   setInterval(removeMobileConstraints, 2000);
   setTimeout(removeMobileConstraints, 500);
+  setTimeout(removeMobileConstraints, 2000);
+  setTimeout(removeMobileConstraints, 5000);
 }
 
 const container = document.getElementById("root");

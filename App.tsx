@@ -267,8 +267,8 @@ const App = () => {
 			gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
 			maxWidth: '90rem',
 			margin: '0 auto',
-			// Massive bottom padding to ensure mobile can scroll past all content
-			padding: '0 1rem 12rem'
+			// EXTREME bottom padding to ensure mobile can scroll past all content
+			padding: '0 1rem 20rem'
 		},
 		gameCard: {
 			background: 'rgba(255,255,255,0.95)',
@@ -498,7 +498,7 @@ const App = () => {
 				minHeight: 'auto !important',
 				maxHeight: 'none !important',
 				overflow: 'visible',
-				paddingBottom: '15rem' // Extra padding for mobile
+				paddingBottom: '25rem' // MASSIVE padding for mobile bottom reach
 			})
 		}}>
 			<div style={styles.backgroundOrb1} />
@@ -587,6 +587,39 @@ const App = () => {
 								Desktop: ✅ Working | Mobile: {navigator.userAgent.includes('Mobile') ? '🔍 Testing' : '💻 Desktop'}
 							</div>
 						</footer>
+						
+						{/* MOBILE BOTTOM SPACER - Ensure mobile users can reach the footer */}
+						<div style={{
+							height: '20rem',
+							width: '100%',
+							background: 'transparent',
+							display: 'block',
+							clear: 'both'
+						}} />
+						
+						{/* EXTREME MOBILE BOTTOM SPACER */}
+						{typeof window !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent) && (
+							<div style={{
+								height: '30rem',
+								width: '100%',
+								background: 'linear-gradient(to bottom, transparent, rgba(102, 126, 234, 0.1))',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								fontSize: '1.2rem',
+								color: 'rgba(255,255,255,0.8)',
+								textAlign: 'center',
+								padding: '2rem'
+							}}>
+								<div>
+									<div style={{fontSize: '3rem', marginBottom: '1rem'}}>🎉</div>
+									<div style={{fontWeight: 'bold'}}>You've reached the very bottom!</div>
+									<div style={{fontSize: '0.9rem', marginTop: '0.5rem', opacity: 0.8}}>
+										Mobile scrolling is working perfectly ✅
+									</div>
+								</div>
+							</div>
+						)}
 					</>
 				)}
 			</div>
