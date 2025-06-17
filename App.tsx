@@ -132,20 +132,20 @@ const App = () => {
 
 	const styles = {
 		container: {
-			// Better mobile viewport handling - fallback then custom property
-			minHeight: 'calc(var(--vh, 1vh) * 100)',
+			// Remove minHeight constraint to allow natural content flow
 			background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
 			fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif',
 			color: '#1f2937',
 			position: 'relative',
+			// Ensure content can scroll freely
 			overflowY: 'auto',
 			overflowX: 'hidden',
 			// Ensure smooth scrolling on iOS
 			WebkitOverflowScrolling: 'touch',
 			// Prevent bounce scrolling
 			overscrollBehavior: 'none',
-			// Add padding bottom for mobile safe area
-			paddingBottom: 'env(safe-area-inset-bottom, 20px)'
+			// Add adequate padding for mobile
+			paddingBottom: '4rem'
 		},
 		backgroundOrb1: {
 			position: 'absolute',
@@ -267,10 +267,8 @@ const App = () => {
 			gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
 			maxWidth: '90rem',
 			margin: '0 auto',
-			// Increase bottom padding for mobile scrolling
-			padding: '0 1rem 6rem',
-			// Ensure mobile safe area is respected
-			paddingBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))'
+			// Much more bottom padding for mobile scrolling
+			padding: '0 1rem 8rem'
 		},
 		gameCard: {
 			background: 'rgba(255,255,255,0.95)',
