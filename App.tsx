@@ -267,8 +267,8 @@ const App = () => {
 			gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
 			maxWidth: '90rem',
 			margin: '0 auto',
-			// EXTREME bottom padding to ensure mobile can scroll past all content
-			padding: '0 1rem 20rem'
+			// Clean padding without excessive bottom space
+			padding: '0 1rem 1rem'
 		},
 		gameCard: {
 			background: 'rgba(255,255,255,0.95)',
@@ -497,8 +497,7 @@ const App = () => {
 				height: 'auto !important',
 				minHeight: 'auto !important',
 				maxHeight: 'none !important',
-				overflow: 'visible',
-				paddingBottom: '25rem' // MASSIVE padding for mobile bottom reach
+				overflow: 'visible'
 			})
 		}}>
 			<div style={styles.backgroundOrb1} />

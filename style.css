@@ -279,8 +279,11 @@ canvas.game-canvas {
   /* Ensure containers can expand naturally */
   .home-container {
     overflow-y: visible !important;
-    /* Add natural bottom spacing */
-    padding-bottom: 2rem;
+    /* Remove excessive bottom spacing */
+    padding-bottom: 1rem !important;
+    max-width: 100vw !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
   
   /* Remove any fixed positioning constraints */
@@ -290,7 +293,8 @@ canvas.game-canvas {
   
   /* Ensure grid containers have proper spacing */
   .game-grid {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
   }
 }
 
@@ -298,25 +302,30 @@ canvas.game-canvas {
 @media screen and (max-width: 768px) and (orientation: portrait) {
   /* Fix container proportions for portrait */
   .home-container {
-    padding: 1rem !important;
-    min-height: 100vh;
+    padding: 0.5rem !important;
+    min-height: auto !important;
+    max-width: 100vw !important;
   }
   
-  /* Prevent cards from stretching */
+  /* Prevent cards from stretching - constrain width */
   .game-card {
-    width: 100% !important;
-    max-width: none !important;
+    width: calc(100vw - 1rem) !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
     aspect-ratio: auto !important;
     height: auto !important;
     min-height: auto !important;
   }
   
-  /* Fix grid layout for portrait */
+  /* Fix grid layout for portrait - center cards */
   .game-grid {
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 100vw !important;
+    padding: 0 0.5rem !important;
+    margin-bottom: 1rem !important;
+    justify-items: center !important;
   }
   
   /* Fix text and button sizing */
@@ -350,7 +359,7 @@ canvas.game-canvas {
     font-size: 0.875rem !important;
   }
   
-  /* Prevent any element from being too wide */
+  /* Prevent any element from being too wide - strict constraints */
   * {
     max-width: 100vw !important;
     box-sizing: border-box !important;
@@ -359,7 +368,15 @@ canvas.game-canvas {
   /* Fix any flex containers */
   [style*="display: flex"], .flex {
     flex-wrap: wrap !important;
+    max-width: 100% !important;
   }
+  
+  /* Constrain all containers */
+  div, section, article {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}
 }
 
 /* LANDSCAPE MODE - Keep existing good behavior */
