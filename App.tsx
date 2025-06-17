@@ -551,14 +551,26 @@ const App = () => {
 							</div>
 						</section>
 						
-						{/* Temporary debug element to test scrolling */}
+						{/* Debug info and footer for mobile testing */}
 						<footer style={{
 							textAlign: 'center',
 							padding: '4rem 1rem',
-							color: 'rgba(255,255,255,0.7)',
-							fontSize: '0.9rem'
+							color: 'rgba(255,255,255,0.9)',
+							fontSize: '1.1rem',
+							background: 'rgba(0,0,0,0.2)',
+							borderRadius: '1rem',
+							margin: '2rem 1rem',
+							border: '2px solid rgba(255,255,255,0.3)'
 						}}>
-							🎯 You've reached the bottom! Scrolling works perfectly.
+							<div style={{marginBottom: '1rem'}}>
+								🎯 <strong>BOTTOM REACHED!</strong> 
+							</div>
+							<div style={{fontSize: '0.9rem', opacity: 0.8}}>
+								If you can see this clearly, scrolling works!
+							</div>
+							<div style={{fontSize: '0.8rem', marginTop: '1rem', opacity: 0.7}}>
+								Desktop: ✅ Working | Mobile: {navigator.userAgent.includes('Mobile') ? '🔍 Testing' : '💻 Desktop'}
+							</div>
 						</footer>
 					</>
 				)}

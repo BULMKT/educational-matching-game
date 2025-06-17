@@ -6,50 +6,70 @@ import App from "./App";
 const forceScrollingFix = () => {
   console.log('🔧 Applying mobile scrolling fix...');
   
-  // Get computed styles before fix
-  const htmlBefore = window.getComputedStyle(document.documentElement);
-  const bodyBefore = window.getComputedStyle(document.body);
-  console.log('📊 Before fix - HTML height:', htmlBefore.height, 'overflow:', htmlBefore.overflow);
-  console.log('📊 Before fix - Body height:', bodyBefore.height, 'overflow:', bodyBefore.overflow);
+  const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
-  // Force style overrides
-  const htmlStyle = document.documentElement.style;
-  htmlStyle.setProperty('height', 'auto', 'important');
-  htmlStyle.setProperty('max-height', 'none', 'important');
-  htmlStyle.setProperty('overflow-y', 'auto', 'important');
-  htmlStyle.setProperty('overflow-x', 'hidden', 'important');
-  htmlStyle.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
-  
-  const bodyStyle = document.body.style;
-  bodyStyle.setProperty('height', 'auto', 'important');
-  bodyStyle.setProperty('max-height', 'none', 'important');
-  bodyStyle.setProperty('min-height', '100vh', 'important');
-  bodyStyle.setProperty('overflow-y', 'auto', 'important');
-  bodyStyle.setProperty('overflow-x', 'hidden', 'important');
-  bodyStyle.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
-  
-  const root = document.getElementById('root');
-  if (root) {
-    const rootStyle = root.style;
-    rootStyle.setProperty('height', 'auto', 'important');
-    rootStyle.setProperty('max-height', 'none', 'important');
-    rootStyle.setProperty('min-height', '100vh', 'important');
-    rootStyle.setProperty('overflow', 'visible', 'important');
+  if (isMobile) {
+    console.log('� Mobile device detected - applying aggressive fixes');
+    
+    // Mobile-specific fixes
+    const applyMobileFix = (element, name) => {
+      if (element) {
+        const style = element.style;
+        style.setProperty('height', 'auto', 'important');
+        style.setProperty('max-height', 'none', 'important');
+        style.setProperty('min-height', '100vh', 'important');
+        style.setProperty('overflow', 'visible', 'important');
+        style.setProperty('overflow-y', 'auto', 'important');
+        style.setProperty('overflow-x', 'hidden', 'important');
+        style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
+        style.setProperty('overscroll-behavior-y', 'auto', 'important');
+        style.setProperty('position', 'static', 'important');
+        style.setProperty('-webkit-transform', 'translate3d(0,0,0)', 'important');
+        style.setProperty('transform', 'translate3d(0,0,0)', 'important');
+        
+        console.log(`✅ Applied mobile fixes to ${name}`);
+      }
+    };
+    
+    applyMobileFix(document.documentElement, 'HTML');
+    applyMobileFix(document.body, 'BODY');
+    applyMobileFix(document.getElementById('root'), 'ROOT');
+    
+    // Force viewport meta tag for mobile
+    let viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover');
+    }
+    
+  } else {
+    console.log('💻 Desktop device - using standard fixes');
+    
+    // Standard fixes for desktop
+    const htmlStyle = document.documentElement.style;
+    htmlStyle.setProperty('height', 'auto', 'important');
+    htmlStyle.setProperty('max-height', 'none', 'important');
+    htmlStyle.setProperty('overflow-y', 'auto', 'important');
+    
+    const bodyStyle = document.body.style;
+    bodyStyle.setProperty('height', 'auto', 'important');
+    bodyStyle.setProperty('max-height', 'none', 'important');
+    bodyStyle.setProperty('overflow-y', 'auto', 'important');
+    
+    const root = document.getElementById('root');
+    if (root) {
+      root.style.setProperty('height', 'auto', 'important');
+      root.style.setProperty('overflow', 'visible', 'important');
+    }
   }
   
-  // Get computed styles after fix
-  const htmlAfter = window.getComputedStyle(document.documentElement);
-  const bodyAfter = window.getComputedStyle(document.body);
-  console.log('✅ After fix - HTML height:', htmlAfter.height, 'overflow:', htmlAfter.overflow);
-  console.log('✅ After fix - Body height:', bodyAfter.height, 'overflow:', bodyAfter.overflow);
-  
-  // Test scroll capability
+  // Test scroll capability after fixes
   setTimeout(() => {
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
     console.log('📏 Scroll test - scrollHeight:', scrollHeight, 'clientHeight:', clientHeight);
-    console.log('📏 Can scroll:', scrollHeight > clientHeight ? 'YES' : 'NO');
-  }, 1000);
+    console.log('📏 Can scroll:', scrollHeight > clientHeight ? 'YES ✅' : 'NO ❌');
+    console.log('📏 Device type:', isMobile ? 'Mobile 📱' : 'Desktop 💻');
+  }, 1500);
 };
 
 // Apply fix at multiple points

@@ -240,40 +240,49 @@ canvas.game-canvas {
   }
 }
 
-/* Mobile scrolling improvements */
-@media (max-width: 768px) {
-  html, body {
-    /* Prevent bounce scrolling on iOS */
-    overscroll-behavior: none;
-    /* Ensure smooth scrolling */
-    -webkit-overflow-scrolling: touch;
-    /* Remove any height constraints */
+/* AGGRESSIVE MOBILE-ONLY FIXES */
+@media screen and (max-width: 768px) {
+  /* Force mobile scrolling with extreme measures */
+  html {
     height: auto !important;
-    min-height: 100vh;
+    max-height: none !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: auto !important;
+  }
+  
+  body {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: auto !important;
+    position: static !important;
   }
   
   #root {
-    /* Allow root to expand with content */
     height: auto !important;
-    min-height: 100vh;
+    max-height: none !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    position: static !important;
   }
   
-  /* Use CSS custom property for mobile viewport */
-  .mobile-vh {
-    height: calc(var(--vh, 1vh) * 100);
-    min-height: calc(var(--vh, 1vh) * 100);
+  /* Force all containers to allow scrolling */
+  * {
+    max-height: none !important;
   }
   
-  /* Better touch targets for mobile */
-  button {
-    min-height: 48px;
-    min-width: 48px;
-  }
-  
-  /* Ensure content doesn't get cut off */
-  .container {
-    padding-bottom: env(safe-area-inset-bottom, 20px);
-    height: auto !important;
+  /* Specific mobile webkit fixes */
+  body {
+    -webkit-transform: translate3d(0,0,0) !important;
+    transform: translate3d(0,0,0) !important;
   }
 }
 
