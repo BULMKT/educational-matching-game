@@ -11,6 +11,10 @@ export class Game {
 
   constructor(private canvas: HTMLCanvasElement) {
     this.ctx = canvas.getContext('2d')!;
+    
+    // Disable image smoothing for crisp pixel-perfect rendering
+    this.ctx.imageSmoothingEnabled = false;
+    
     this.input = new InputManager(canvas);
     window.addEventListener('resize', () => this.resize());
     this.resize();
@@ -41,7 +45,23 @@ export class Game {
   }
 
   private resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    // Get device pixel ratio for crisp rendering
+    const dpr = window.devicePixelRatio || 1;
+    const displayWidth = window.innerWidth;
+    const displayHeight = window.innerHeight;
+    
+    // Set the actual canvas size in pixels
+    this.canvas.width = displayWidth * dpr;
+    this.canvas.height = displayHeight * dpr;
+    
+    // Scale the canvas back down using CSS
+    this.canvas.style.width = displayWidth + 'px';
+    this.canvas.style.height = displayHeight + 'px';
+    
+    // Scale the drawing context so everything draws at the correct size
+    this.ctx.scale(dpr, dpr);
+    
+    // Re-disable image smoothing after context reset
+    this.ctx.imageSmoothingEnabled = false;
   }
 }

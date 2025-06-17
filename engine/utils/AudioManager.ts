@@ -35,7 +35,18 @@ export class AudioManager {
       } else {
         sound.onended = null;
       }
-      sound.play();
+      sound.play().catch(() => {}); // Ignore autoplay blocking
+    }
+  }
+
+  // Play very subtle feedback sounds without interrupting main audio
+  playSubtle(name: string, volume: number = 0.15) {
+    const sound = this.sounds[name];
+    if (sound && !this.isPlaying()) {
+      const subtleSound = sound.cloneNode() as HTMLAudioElement;
+      subtleSound.volume = volume;
+      subtleSound.currentTime = 0;
+      subtleSound.play().catch(() => {}); // Ignore autoplay blocking
     }
   }
 
