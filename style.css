@@ -1,25 +1,50 @@
-@tailwind base;
+/* DISABLE TAILWIND BASE TEMPORARILY FOR DEBUGGING */
+/* @tailwind base; */
 @tailwind components;
 @tailwind utilities;
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* Modern base UI polish */
-html, body {
-  height: auto !important;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+/* Critical mobile scrolling reset - override everything */
+* {
+  box-sizing: border-box;
 }
 
+html {
+  height: auto !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#root {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+}
+
+/* Modern base UI polish */
 body {
   @apply font-sans text-gray-800;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  padding: 0;
 }
 
 /* Enhanced animations */

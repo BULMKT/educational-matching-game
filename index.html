@@ -14,22 +14,45 @@
     <!-- Tailwind and custom styles -->
     <link rel="stylesheet" href="./style.css" />
 
-    <!-- Basic meta styling -->
+    <!-- Critical mobile scrolling styles - override everything -->
     <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        /* Remove height and overflow constraints for homepage scrolling */
-        min-height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
+      * {
+        box-sizing: border-box;
       }
+      
+      html {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: none !important;
+      }
+      
+      body {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: none !important;
+      }
+      
       #root {
-        width: 100%;
-        /* Allow root to grow with content */
-        min-height: 100vh;
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100vh !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
       }
     </style>
   </head>
