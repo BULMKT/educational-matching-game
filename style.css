@@ -204,6 +204,41 @@ canvas.game-canvas {
   }
 }
 
+/* Mobile scrolling improvements */
+@media (max-width: 768px) {
+  body {
+    /* Prevent bounce scrolling on iOS */
+    overscroll-behavior: none;
+    /* Ensure smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Use CSS custom property for mobile viewport */
+  .mobile-vh {
+    height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+  
+  /* Better touch targets for mobile */
+  button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Ensure content doesn't get cut off */
+  .container {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+}
+
+/* Improved iOS safari scrolling */
+@supports (-webkit-touch-callout: none) {
+  .container {
+    /* Fix for iOS viewport units */
+    min-height: -webkit-fill-available;
+  }
+}
+
 /* Dark mode support (future enhancement) */
 @media (prefers-color-scheme: dark) {
   .game-card {

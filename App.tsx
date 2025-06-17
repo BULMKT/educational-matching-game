@@ -132,13 +132,20 @@ const App = () => {
 
 	const styles = {
 		container: {
-			minHeight: '100vh',
+			// Better mobile viewport handling - fallback then custom property
+			minHeight: 'calc(var(--vh, 1vh) * 100)',
 			background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
 			fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif',
 			color: '#1f2937',
 			position: 'relative',
 			overflowY: 'auto',
-			overflowX: 'hidden'
+			overflowX: 'hidden',
+			// Ensure smooth scrolling on iOS
+			WebkitOverflowScrolling: 'touch',
+			// Prevent bounce scrolling
+			overscrollBehavior: 'none',
+			// Add padding bottom for mobile safe area
+			paddingBottom: 'env(safe-area-inset-bottom, 20px)'
 		},
 		backgroundOrb1: {
 			position: 'absolute',
@@ -260,7 +267,10 @@ const App = () => {
 			gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
 			maxWidth: '90rem',
 			margin: '0 auto',
-			padding: '0 1rem 4rem'
+			// Increase bottom padding for mobile scrolling
+			padding: '0 1rem 6rem',
+			// Ensure mobile safe area is respected
+			paddingBottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))'
 		},
 		gameCard: {
 			background: 'rgba(255,255,255,0.95)',
@@ -428,6 +438,24 @@ const App = () => {
 			padding: '2rem 1rem'
 		}
 	};
+
+	// Add responsive mobile viewport handling
+	useEffect(() => {
+		// Handle viewport height changes on mobile (address bar show/hide)
+		const setVH = () => {
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		};
+		
+		setVH();
+		window.addEventListener('resize', setVH);
+		window.addEventListener('orientationchange', setVH);
+		
+		return () => {
+			window.removeEventListener('resize', setVH);
+			window.removeEventListener('orientationchange', setVH);
+		};
+	}, []);
 
 	// If in play mode, render only the canvas
 	if (view === "play") {
